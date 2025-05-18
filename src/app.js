@@ -1,17 +1,21 @@
 const express = require("express");
 const app = express();
 
-app.use("/hello", (req, res) => {
-  res.send("my express server says hello");
+app.use(express.json());
+
+app.use("/", (req, res,next) => {
+  console.log("my express server says hello");
+  next();
 });
 
-app.use("/test", (req, res) => {
-  res.send("my express server is testing you");
+app.get("/users", (req, res) => {
+  res.send({name:"vyshnavi",place:"tokyo"})
 });
 
-app.use("/",(req, res) => {
-  res.send("my express server")
-})
+app.post("/users", (req, res) => {
+  console.log(req.body);
+  res.send("data recieevd ")
+});
 
 app.listen(3001, () => {
   console.log("listening to port 3001")
