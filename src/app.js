@@ -8,7 +8,6 @@ app.use(express.json());
 
 app.post("/signUp", async(req, res) => {
   const userObj = req.body;
-
   try {
     const user = new User(userObj);
     await user.save()
@@ -36,6 +35,43 @@ app.get("/user", async (req, res) => {
     res.status(400).send(error);
   }
 })
+
+app.delete("/user", async(req, res) => {
+  const id = req.body.id
+  try {
+    await User.findByIdAndDelete(id);
+    res.send("user deleted succesfully")
+
+  } catch (error) {
+    console.log("something went wrong")
+    res.status(400).send("something went wrong");
+  }
+})
+
+app.patch("/user", async (req, res) => {
+  try {
+    const userId = req.body.id
+    const data = req.body
+    await User.findByIdAndUpdate(userId, data)
+    res.send("data updated succesfully")
+    
+  } catch (error) {
+    console.log("something went wrong")
+    res.status(400).send("something went wrong");
+  }
+})
+
+app.patch("/userByEmail", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const data = req.body;
+    await User.findOne({ email:email}).updateOne(data);
+    res.send("data updated succesfully by email");
+  } catch (error) {
+    console.log("something went wrong");
+    res.status(400).send("something went wrong");
+  }
+});
 
 connectionDB().then(() => {
   console.log("db connection successfull")
