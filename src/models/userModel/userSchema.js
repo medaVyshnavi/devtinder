@@ -60,14 +60,14 @@ const userSchema = new Schema(
         },
         {
           validator: function (value) {
-            return new Set(value)
+            return new Set(value).size === value.length
           },
           message: "unique hobbies are allowed"
         }
       ]
     },
     photoURL: {
-      type:string
+      type:String
     }
   },
   {
