@@ -23,6 +23,7 @@ const userSchema = new Schema(
     },
     dob: {
       type: Date,
+      required: true
     },
     gender: {
       type: String,
@@ -52,12 +53,31 @@ const userSchema = new Schema(
     },
     hobbies: {
       type: [String],
+      validate: [
+        {
+          validator: arrayLimit,
+          message: "Can only add upto 6 values",
+        },
+        {
+          validator: function (value) {
+            return new Set(value)
+          },
+          message: "unique hobbies are allowed"
+        }
+      ]
     },
+    photoURL: {
+      type:string
+    }
   },
   {
     timestamps: true,
   }
 );
+
+function arrayLimit(val) {
+  return !val || val.length <= 6
+};
 
 const User = mongoose.model("User", userSchema)
 
