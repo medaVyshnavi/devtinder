@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
-const {Schema} = mongoose
+const validator = require("validator")
+const { Schema } = mongoose
+
 
 const userSchema = new Schema(
   {
@@ -12,6 +14,7 @@ const userSchema = new Schema(
     lastName: {
       type: String,
       trim: true,
+      required: true,
     },
     age: {
       type: Number,
@@ -23,14 +26,13 @@ const userSchema = new Schema(
     },
     dob: {
       type: Date,
-      required: true
     },
     gender: {
       type: String,
       enum: {
         values: ["male", "female", "other"],
-        message: "Gender is not a valid option"
-      }
+        message: "Gender is not a valid option",
+      },
     },
     email: {
       type: String,
@@ -38,12 +40,12 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
       unique: true,
-      validate: {
-        validator: (value) => {
-          return value.includes("@");
+      validate: [
+        {
+          validator: (value) => validator.isEmail(value),
+          message: "email is not a valid value.",
         },
-        message: "Email must contain @",
-      },
+      ],
     },
     password: {
       type: String,
@@ -60,15 +62,18 @@ const userSchema = new Schema(
         },
         {
           validator: function (value) {
-            return new Set(value).size === value.length
+            return new Set(value).size === value.length;
           },
-          message: "unique hobbies are allowed"
-        }
-      ]
+          message: "unique hobbies are allowed",
+        },
+      ],
+      default:[]
     },
     photoURL: {
-      type:String
-    }
+      type: String,
+      default:
+        "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg",
+    },
   },
   {
     timestamps: true,
