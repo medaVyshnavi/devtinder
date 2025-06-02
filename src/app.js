@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookie_parser())
 
 app.use('/', authRouter);
-app.use("/", profileRouter);
+app.use("/profile", profileRouter);
 app.use("/", requestsRouter);
 
 connectionDB().then(() => {
