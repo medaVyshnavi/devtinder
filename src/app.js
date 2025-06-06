@@ -13,7 +13,7 @@ app.use(cookie_parser())
 
 app.use('/', authRouter);
 app.use("/profile", profileRouter);
-app.use("/", requestsRouter);
+app.use("/request", requestsRouter);
 
 connectionDB().then(() => {
   console.log("db connection successfull")

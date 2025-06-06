@@ -44,7 +44,7 @@ profileRouter.patch("/password", userAuthentication, async (req, res) => {
     res.send("password updated succesfully");
 
   } catch (error) {
-    res.status(400).send(error)
+    res.status(400).send(error.message)
   }
 })
 
