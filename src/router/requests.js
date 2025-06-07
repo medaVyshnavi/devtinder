@@ -63,8 +63,9 @@ requestsRouter.post("/review/:status/:requestId", userAuthentication, async (req
 
     const fetchDataToUpdateStatus = await ConnectionRequest.findOne({
       _id: requestId,
-      status: "interested"
-    })
+      toUserId: loggedInUser._id,
+      status: "interested",
+    });
     console.log(fetchDataToUpdateStatus);
 
     if (!fetchDataToUpdateStatus) {

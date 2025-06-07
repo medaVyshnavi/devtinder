@@ -5,6 +5,7 @@ const { connectionDB } = require("./config/database")
 const authRouter = require("./router/auth")
 const profileRouter = require("./router/profile");
 const requestsRouter = require("./router/requests");
+const userRouter = require("./router/user")
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cookie_parser())
 app.use('/', authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestsRouter);
+app.use("/user", userRouter)
 
 connectionDB().then(() => {
   console.log("db connection successfull")
