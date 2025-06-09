@@ -57,6 +57,11 @@ userRouter.get("/connections", userAuthentication, async (req, res) => {
 
 userRouter.get("/feed", userAuthentication, async(req, res) => {
   try {
+    const page = req.query.page || 1;
+    let limit = req.query.limit || 2;
+    limit = limit > 50 ? 50 : limit
+    const skip = (page - 1) * limit;
+
     const loggedInUser = req.user
     const accessedProfiles = await ConnectionRequest.find({
       $or: [
@@ -84,7 +89,8 @@ userRouter.get("/feed", userAuthentication, async(req, res) => {
 
     const feedList = await User.find({ _id: { $nin: objectIds } }).select(
       "firstName lastName dob gender hobbies photoURL about"
-    );
+    ).skip(skip).limit(limit);
+
     res.status(200).json({message : "Sucessfully Fetched the feed data", data:feedList})
     
   } catch (error) {
