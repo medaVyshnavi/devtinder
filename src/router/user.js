@@ -10,7 +10,14 @@ userRouter.get("/requests/received", userAuthentication, async (req, res) => {
     const requestList = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName"]);
+    }).populate("fromUserId", [
+      "firstName",
+      "lastName",
+      "age",
+      "gender",
+      "photoURL",
+      "about",
+    ]);
     return res.status(200).json({message:"Fetched data Sucessfully", data: requestList})
     
   } catch (error) {
@@ -26,8 +33,8 @@ userRouter.get("/connections", userAuthentication, async (req, res) => {
         { status: "accepted", fromUserId: loggedInUser._id },
         { status: "accepted", toUserId: loggedInUser._id }]
     })
-      .populate("fromUserId", ["firstName", "lastName"])
-      .populate("toUserId", ["firstName", "lastName"]);
+      .populate("fromUserId", ["firstName", "lastName","age","gender","photoURL","about"])
+      .populate("toUserId", ["firstName", "lastName","age","gender","photoURL", "about"]);
 
     if (!connectionList) {
       throw new Error("No connections found. You can start by sending requests to people")
