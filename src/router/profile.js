@@ -6,7 +6,15 @@ const bcrypt = require("bcrypt");
 
 profileRouter.get("/view", userAuthentication, async (req, res) => {
   try {
-    const userDetails = req.user;
+    const userDetails = {
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      age: req.user.age,
+      gender: req.user.gender,
+      about: req.user.about,
+      photoURL: req.user.photoURL,
+    };
+    
     res.send(userDetails);
   } catch (error) {
     res.status(400).send("ERROR " + error.message);

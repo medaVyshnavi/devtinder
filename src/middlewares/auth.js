@@ -4,7 +4,9 @@ const {User} = require("../models/userSchema")
 const userAuthentication = async(req, res, next) => {
   try {
     const { token } = req.cookies;
-    if (!token) throw new Error("Invalid token")
+    if (!token) {
+      return res.status(401).send({message : "Please login."})
+    }
     
     const decoded = await jwt.verify(token, "devTinder@2712");
     const userId = decoded._id
