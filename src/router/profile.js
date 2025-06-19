@@ -15,7 +15,7 @@ profileRouter.get("/view", userAuthentication, async (req, res) => {
       photoURL: req.user.photoURL,
     };
     
-    res.send(userDetails);
+    res.status(200).json({data: userDetails });
   } catch (error) {
     res.status(400).send("ERROR " + error.message);
   }
@@ -34,7 +34,7 @@ profileRouter.patch("/edit", userAuthentication, async(req, res) => {
       res.status(200).send({message: "updated data",data : loggedInUser})
     }
   } catch (error) {
-    res.status(400).send("ERROR " + error.message);
+    res.status(400).json({message : error.message});
   }
 })
 
@@ -49,10 +49,10 @@ profileRouter.patch("/password", userAuthentication, async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
-    res.send("password updated succesfully");
+    res.status(200).json({ message: "password updated succesfully" });
 
   } catch (error) {
-    res.status(400).send(error.message)
+    res.status(400).json({ message: error.message })
   }
 })
 

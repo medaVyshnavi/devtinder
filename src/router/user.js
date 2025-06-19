@@ -53,7 +53,7 @@ userRouter.get("/connections", userAuthentication, async (req, res) => {
       .json({ message: "Connections Fetched successfully", data });
     
   } catch (error) {
-    res.status(400).send({message:error})
+    res.status(400).json({message:error})
   }
 });
 
@@ -65,7 +65,7 @@ userRouter.get("/connections", userAuthentication, async (req, res) => {
 userRouter.get("/feed", userAuthentication, async(req, res) => {
   try {
     const page = req.query.page || 1;
-    let limit = req.query.limit || 2;
+    let limit = req.query.limit || 25;
     limit = limit > 50 ? 50 : limit
     const skip = (page - 1) * limit;
 
@@ -101,7 +101,7 @@ userRouter.get("/feed", userAuthentication, async(req, res) => {
     res.status(200).json({message : "Sucessfully Fetched the feed data", data:feedList})
     
   } catch (error) {
-    res.status(400).send({message:error})
+    res.status(400).json({message:error})
   }
 })
 

@@ -22,9 +22,21 @@ authRouter.post("/signUp", async (req, res) => {
       password: hashedPassword,
     });
     await user.save();
-    res.send("saved user to db");
+
+    const token = await user.getJWT();
+
+    const userProfile = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      age: user.age,
+      gender: user.gender,
+      about: user.about,
+      photoURL: user.photoURL,
+    };
+    res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
+    res.status(200).json({message:"Successfully created an account", data: userProfile});
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json({message:error.message});
   }
 });
 
@@ -36,25 +48,26 @@ authRouter.post("/login", async (req, res) => {
     }).exec();
 
     if (!user) {
-      throw new Error("Invalid Credentials");
+      return res.status(400).json({message:"Invalid Credentials"});
     }
     const isPasswordValid = await user.validatePassword(password);
 
     if (!isPasswordValid) {
-      throw new Error("Invalid Credentials");
+      return res.status(400).json({ message: "Invalid Credentials" });
     }
 
     const token = await user.getJWT();
     const userProfile = { firstName: user.firstName, lastName: user.lastName, age:user.age,gender:user.gender, about:user.about, photoURL: user.photoURL}
     res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
-    res.json({ message: "Login succesfull", data: userProfile });
+    res.status(200).json({ message: "Login successfull", data: userProfile });
+
   } catch (error) {
-    res.status(400).send("ERROR: " + error.message);
+    res.status(400).send({message: error.message});
   }
 });
 
 authRouter.post("/logout",async (req, res) => {
-  res.clearCookie('token').send("logged out succesfully")
+  res.clearCookie('token').json({message:"logged out succesfully"})
 })
 
 module.exports = authRouter

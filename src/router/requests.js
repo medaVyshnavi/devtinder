@@ -66,7 +66,6 @@ requestsRouter.post("/review/:status/:requestId", userAuthentication, async (req
       toUserId: loggedInUser._id,
       status: "interested",
     });
-    console.log(fetchDataToUpdateStatus);
 
     if (!fetchDataToUpdateStatus) {
       throw new Error("connection not found");
