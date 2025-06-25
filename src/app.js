@@ -1,18 +1,36 @@
 const express = require("express");
+const cookie_parser = require("cookie-parser");
+const cors = require("cors")
+require("dotenv").config();
+
+const { connectionDB } = require("./config/database")
+const authRouter = require("./router/auth")
+const profileRouter = require("./router/profile");
+const requestsRouter = require("./router/requests");
+const userRouter = require("./router/user")
+
 const app = express();
 
-app.use("/hello", (req, res) => {
-  res.send("my express server says hello");
-});
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true
+  })
+);
+app.use(express.json());
+app.use(cookie_parser())
 
-app.use("/test", (req, res) => {
-  res.send("my express server is testing you");
-});
+app.use('/', authRouter);
+app.use("/profile", profileRouter);
+app.use("/request", requestsRouter);
+app.use("/user", userRouter)
 
-app.use("/",(req, res) => {
-  res.send("my express server")
+connectionDB().then(() => {
+  
+  app.listen(process.env.PORT, () => {
+    console.log("db connection successfull");
+    console.log("listening on port 3001")
+  })
+}).catch(() => {
+  console.log("error in db connection")
 })
-
-app.listen(3001, () => {
-  console.log("listening to port 3001")
-});
