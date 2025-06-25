@@ -42,6 +42,7 @@ requestsRouter.post("/send/:status/:userId", userAuthentication, async (req, res
 
     const connectionRequest = await newConnection.save();
     const emailResponse = await sendEmail.run();
+    console.log(emailResponse)
 
     if (connectionRequest) {
       return res.status(200).json({ message: "Request sent successfully" });
