@@ -1,6 +1,7 @@
 const express = require("express");
 const cookie_parser = require("cookie-parser");
 const cors = require("cors")
+require("dotenv").config();
 
 const { connectionDB } = require("./config/database")
 const authRouter = require("./router/auth")
@@ -25,8 +26,9 @@ app.use("/request", requestsRouter);
 app.use("/user", userRouter)
 
 connectionDB().then(() => {
-  console.log("db connection successfull")
-  app.listen("3001", () => {
+  
+  app.listen(process.env.PORT, () => {
+    console.log("db connection successfull");
     console.log("listening on port 3001")
   })
 }).catch(() => {

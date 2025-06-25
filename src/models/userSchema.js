@@ -90,7 +90,7 @@ function arrayLimit(val) {
 };
 
 userSchema.methods.getJWT = async function () {
-  const token = await jwt.sign({ _id: this._id }, "devTinder@2712", {
+  const token = await jwt.sign({ _id: this._id }, process.env.JWT_SECERT, {
     expiresIn: "1h",
   });
   return token;
