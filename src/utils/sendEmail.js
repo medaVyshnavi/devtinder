@@ -40,8 +40,8 @@ const createSendEmailCommand = (toAddress, fromAddress) => {
 
 const run = async () => {
   const sendEmailCommand = createSendEmailCommand(
-    "medavyshnavi2023@gmail.com",
-    "vyshnavivenkatesh@gmail.com"
+    "vyshnavivenkatesh@gmail.com",
+    "vyshnavi@cacheme.shop"
   );
 
   try {

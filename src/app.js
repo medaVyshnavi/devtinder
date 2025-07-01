@@ -2,12 +2,14 @@ const express = require("express");
 const cookie_parser = require("cookie-parser");
 const cors = require("cors")
 require("dotenv").config();
+require("./utils/cronjob")
 
 const { connectionDB } = require("./config/database")
 const authRouter = require("./router/auth")
 const profileRouter = require("./router/profile");
 const requestsRouter = require("./router/requests");
 const userRouter = require("./router/user")
+const paymentRouter = require("./router/payment")
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use('/', authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestsRouter);
 app.use("/user", userRouter)
+app.use("/payment",paymentRouter)
 
 connectionDB().then(() => {
   
