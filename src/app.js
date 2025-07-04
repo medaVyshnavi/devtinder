@@ -10,6 +10,11 @@ const profileRouter = require("./router/profile");
 const requestsRouter = require("./router/requests");
 const userRouter = require("./router/user")
 const paymentRouter = require("./router/payment")
+const chatRouter = require("./router/chat");
+
+// socket.io
+const { createServer } = require("http");
+const initializeSocket = require("./utils/socketio");
 
 const app = express();
 
@@ -26,11 +31,15 @@ app.use('/', authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestsRouter);
 app.use("/user", userRouter)
-app.use("/payment",paymentRouter)
+app.use("/payment", paymentRouter)
+app.use("/chat", chatRouter);
+
+const httpServer = createServer(app);
+initializeSocket(httpServer)
+
 
 connectionDB().then(() => {
-  
-  app.listen(process.env.PORT, () => {
+  httpServer.listen(process.env.PORT, () => {
     console.log("db connection successfull");
     console.log("listening on port 3001")
   })
